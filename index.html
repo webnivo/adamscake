@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Adams Cake | Cake Shop · Bhiwandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --choc: #3B2415;
+    --choc-deep: #2C1A0F;
+    --coffee: #7A5238;
+    --cream: #FAF3E7;
+    --ivory: #FFFCF6;
+    --espresso: #3A2A20;
+    --gold: #C9A567;
+    --gold-soft: #E7D9B8;
+    --line: rgba(59,36,21,0.12);
+    --shadow: 0 18px 40px rgba(44,26,15,0.14);
+    --radius: 4px;
+    --maxw: 1180px;
+  }
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --choc: #3B2415;
+      --choc-deep: #2C1A0F;
+      --coffee: #7A5238;
+      --cream: #FAF3E7;
+      --ivory: #FFFCF6;
+      --espresso: #3A2A20;
+      --gold: #C9A567;
+      --gold-soft: #E7D9B8;
+    }
+  }
+  * { box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(84px + env(safe-area-inset-top, 0px));
+  }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--espresso);
+    font-family: 'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  h1, h2, h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    color: var(--choc);
+    margin: 0;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  p { margin: 0; line-height: 1.7; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250, 243, 231, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    gap: 20px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .brand img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .brand-text .name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.28rem;
+    color: var(--choc);
+    white-space: nowrap;
+  }
+  .brand-text .sub {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: var(--coffee);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  nav.links {
+    display: flex;
+    gap: 34px;
+  }
+  nav.links a {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--espresso);
+    position: relative;
+    padding: 4px 0;
+  }
+  nav.links a::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  nav.links a:hover::after { transform: scaleX(1); }
+
+  .menu-btn {
+    display: none;
+    width: 42px; height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: transparent;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .menu-btn span, .menu-btn::before, .menu-btn::after {
+    content: '';
+    display: block;
+    width: 18px; height: 1.5px;
+    background: var(--choc);
+    position: relative;
+  }
+  .menu-btn { flex-direction: column; gap: 4px; }
+
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    background: var(--ivory);
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.35s ease;
+  }
+  .mobile-menu.open { max-height: 300px; }
+  .mobile-menu a {
+    padding: 16px 32px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.98rem;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 64px 0 80px;
+  }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    color: var(--coffee);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 26px; height: 1px;
+    background: var(--gold);
+    display: inline-block;
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 4.6vw, 3.9rem);
+    margin-bottom: 22px;
+  }
+  .hero-copy p {
+    font-size: 1.08rem;
+    color: var(--coffee);
+    max-width: 46ch;
+    margin-bottom: 34px;
+  }
+  .btn-order {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--choc);
+    color: var(--ivory);
+    padding: 16px 30px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+  .btn-order:hover {
+    transform: translateY(-2px);
+    background: var(--choc-deep);
+  }
+  .btn-order svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .hero-img-wrap {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .hero-img-wrap img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+  }
+  .hero-img-frame {
+    position: absolute;
+    inset: 18px;
+    border: 1px solid rgba(250,243,231,0.55);
+    border-radius: var(--radius);
+    pointer-events: none;
+  }
+
+  /* ===== ABOUT ===== */
+  .about {
+    padding: 70px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--ivory);
+  }
+  .about .wrap {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 50px;
+    align-items: start;
+  }
+  .about h2 {
+    font-size: clamp(1.9rem, 3vw, 2.5rem);
+  }
+  .about-body p {
+    font-size: 1.02rem;
+    color: var(--coffee);
+    margin-bottom: 20px;
+  }
+  .about-tags {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .about-tags span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--choc);
+  }
+  .about-tags svg { width: 17px; height: 17px; color: var(--gold); }
+
+  /* ===== SERVICES ===== */
+  .services {
+    padding: 84px 0;
+  }
+  .services-head {
+    max-width: 620px;
+    margin-bottom: 52px;
+  }
+  .services-head h2 {
+    font-size: clamp(2rem, 3.4vw, 2.7rem);
+    margin: 14px 0 16px;
+  }
+  .services-head p {
+    color: var(--coffee);
+    font-size: 1.04rem;
+  }
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .service-card {
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 34px 26px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: transparent;
+  }
+  .service-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .service-icon svg { width: 24px; height: 24px; color: var(--choc); }
+  .service-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  .service-card p {
+    font-size: 0.94rem;
+    color: var(--coffee);
+  }
+
+  /* ===== FEATURE IMAGE ===== */
+  .feature {
+    padding: 0 0 84px;
+  }
+  .feature-inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: center;
+    background: var(--choc);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .feature-img { height: 100%; min-height: 380px; overflow: hidden; }
+  .feature-img img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; }
+  .feature-text {
+    padding: 56px 54px;
+    color: var(--cream);
+  }
+  .feature-text .eyebrow { color: var(--gold-soft); }
+  .feature-text .eyebrow::before { background: var(--gold-soft); }
+  .feature-text h2 {
+    color: var(--ivory);
+    font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+    margin-bottom: 18px;
+  }
+  .feature-text p {
+    color: rgba(250,243,231,0.78);
+    font-size: 1rem;
+  }
+
+  /* ===== CONTACT ===== */
+  .contact {
+    background: var(--choc-deep);
+    color: var(--cream);
+    padding: 84px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact .eyebrow { color: var(--gold-soft); }
+  .contact .eyebrow::before { background: var(--gold-soft); }
+  .contact h2 {
+    color: var(--ivory);
+    font-size: clamp(2rem, 3.4vw, 2.7rem);
+    margin: 14px 0 16px;
+  }
+  .contact > .wrap > p {
+    color: rgba(250,243,231,0.72);
+    font-size: 1.04rem;
+    max-width: 46ch;
+    margin-bottom: 48px;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+  }
+  .info-row {
+    display: flex;
+    gap: 18px;
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(250,243,231,0.14);
+  }
+  .info-row:first-child { padding-top: 0; }
+  .info-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(250,243,231,0.08);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .info-icon svg { width: 19px; height: 19px; color: var(--gold-soft); }
+  .info-row h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--ivory);
+    margin: 0 0 6px;
+  }
+  .info-row p { color: rgba(250,243,231,0.72); font-size: 0.96rem; }
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(250,243,231,0.08);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-top: 4px;
+  }
+  .rating-badge svg { width: 14px; height: 14px; color: var(--gold); }
+  .rating-badge span { font-size: 0.9rem; font-weight: 700; color: var(--ivory); }
+
+  .action-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+  }
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(250,243,231,0.2);
+    background: rgba(250,243,231,0.04);
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--ivory);
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .action-btn:hover {
+    background: rgba(250,243,231,0.12);
+    border-color: rgba(250,243,231,0.4);
+    transform: translateX(4px);
+  }
+  .action-btn.primary {
+    background: var(--gold);
+    color: var(--choc-deep);
+    border-color: var(--gold);
+  }
+  .action-btn.primary:hover { background: var(--gold-soft); }
+  .action-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /* ===== FINAL CTA ===== */
+  .final-cta {
+    padding: 100px 0;
+    text-align: center;
+  }
+  .final-cta .eyebrow { justify-content: center; }
+  .final-cta h2 {
+    font-size: clamp(2.1rem, 4vw, 3.1rem);
+    max-width: 14ch;
+    margin: 16px auto 20px;
+  }
+  .final-cta p {
+    color: var(--coffee);
+    font-size: 1.06rem;
+    max-width: 42ch;
+    margin: 0 auto 36px;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--choc-deep);
+    color: var(--cream);
+    padding: 56px 0 calc(40px + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+  }
+  footer .brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  footer .brand-mark img { width: 40px; height: 40px; object-fit: contain; }
+  footer .brand-mark .name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ivory);
+  }
+  footer .sub {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    color: var(--gold-soft);
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  footer .thanks {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(250,243,231,0.85);
+    margin-bottom: 8px;
+  }
+  footer .tagline {
+    font-size: 0.86rem;
+    color: rgba(250,243,231,0.5);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 980px) {
+    .wrap { padding: 0 24px; }
+    nav.links { display: none; }
+    .menu-btn { display: flex; }
+    .mobile-menu { display: flex; }
+    .hero .wrap { grid-template-columns: 1fr; gap: 40px; }
+    .hero { padding: 40px 0 60px; }
+    .hero-img-wrap { order: -1; }
+    .about .wrap { grid-template-columns: 1fr; gap: 28px; }
+    .service-grid { grid-template-columns: repeat(2, 1fr); }
+    .feature-inner { grid-template-columns: 1fr; padding: 0 24px; }
+    .feature-img { min-height: 260px; }
+    .feature-img img { min-height: 260px; }
+    .feature-text { padding: 40px 4px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+  }
+  @media (max-width: 620px) {
+    .wrap { padding: 0 20px; }
+    .service-grid { grid-template-columns: 1fr; }
+    .brand-text .name { font-size: 1.1rem; }
+    .btn-order { width: 100%; justify-content: center; }
+    .action-btn { font-size: 0.94rem; }
+    .feature-inner { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-row">
+    <a href="#home" class="brand" aria-label="Adams Cake home">
+      <img src="./adams-cake-logo.png" alt="Adams Cake logo">
+      <div class="brand-text">
+        <span class="name">Adams Cake</span>
+        <span class="sub">CAKE SHOP · BHIWANDI</span>
+      </div>
+    </a>
+    <nav class="links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Our Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="menu-btn" aria-label="Open menu" aria-expanded="false" id="menuBtn">
+      <span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Our Services</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="hero-copy reveal">
+      <span class="eyebrow">MADE WITH LOVE</span>
+      <h1>Cakes for<br>Every Occasion</h1>
+      <p>Freshly baked. Beautifully crafted. Made to make your moments sweeter.</p>
+      <a class="btn-order" href="https://wa.me/917887721401" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.79 14.13c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.71-4.1-4.85-4.29-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.09.99-2.37.26-.28.57-.35.76-.35s.38 0 .55.01c.18.01.41-.07.64.49.24.58.8 2 .87 2.14.07.14.11.31.02.5-.09.19-.14.31-.27.47-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.61-.07.16-.19.7-.82.88-1.1.19-.28.37-.23.62-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+        <span>Order Now</span>
+      </a>
+    </div>
+    <div class="hero-img-wrap reveal">
+      <img src="./adams-cake.jpg" alt="Premium chocolate cake with fresh strawberries by Adams Cake">
+      <div class="hero-img-frame"></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">ABOUT US</span>
+      <h2>A cake shop for Bhiwandi's sweetest moments</h2>
+    </div>
+    <div class="about-body reveal">
+      <p>Adams Cake is a cake shop based in Kaneri, Bhiwandi, baking cakes for birthdays, celebrations and everyday sweetness. Every cake is made fresh and finished by hand, so it looks as good as it tastes.</p>
+      <p>Whether it's a small family celebration or a big occasion, we're here to help you find the right cake for the moment.</p>
+      <div class="about-tags">
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.3 2.4 5 5.8 5c2 0 3.4 1 4.2 2.3C10.8 6 12.2 5 14.2 5c3.4 0 5.2 3.3 3.8 6.7C15.5 16.4 12 21 12 21z"/></svg>
+          Handcrafted with Care
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"/></svg>
+          Trusted Local Bakery
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="services-head reveal">
+      <span class="eyebrow">OUR SERVICES</span>
+      <h2>We Bake More Than Just Cakes</h2>
+      <p>Delicious cakes crafted for your special moments.</p>
+    </div>
+    <div class="service-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v4M9 4.5c0 1.5 1.2 2.5 3 2.5s3-1 3-2.5M4 12h16v3a5 5 0 01-5 5H9a5 5 0 01-5-5v-3zM3 15h18"/></svg>
+        </div>
+        <h3>Custom Cakes</h3>
+        <p>Personalised cakes designed around your ideas and celebrations.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+        </div>
+        <h3>Theme Cakes</h3>
+        <p>Cakes designed around the theme of your celebration, made to order.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3C9 7 6 10.5 6 14a6 6 0 0012 0c0-3.5-3-7-6-11z"/></svg>
+        </div>
+        <h3>Eggless Cakes</h3>
+        <p>Eggless options prepared with the same care and flavour.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+        </div>
+        <h3>Cake Orders</h3>
+        <p>Simple ordering on WhatsApp, ready for pickup at our Bhiwandi shop.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="contact" id="contact">
+  <div class="wrap">
+    <span class="eyebrow">VISIT OR ORDER</span>
+    <h2>Location &amp; Contact</h2>
+    <p>Find us, call us or place your order with ease.</p>
+    <div class="contact-grid">
+      <div class="info-list">
+        <div class="info-row reveal">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          </div>
+          <div>
+            <h4>Address</h4>
+            <p>Near Bank of India, Telipada, Samad Nagar, Kaneri, Bhiwandi, Maharashtra 421305</p>
+          </div>
+        </div>
+        <div class="info-row reveal">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.7A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.5 2.1L7.9 9.9a16 16 0 006 6l1.4-1.4a2 2 0 012.1-.5c.9.3 1.8.5 2.7.6a2 2 0 011.7 2.3z"/></svg>
+          </div>
+          <div>
+            <h4>Phone</h4>
+            <p>0788 772 1401</p>
+          </div>
+        </div>
+      </div>
+      <div class="action-col reveal">
+        <a class="action-btn primary" href="https://wa.me/917887721401" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.79 14.13c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.71-4.1-4.85-4.29-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.09.99-2.37.26-.28.57-.35.76-.35s.38 0 .55.01c.18.01.41-.07.64.49.24.58.8 2 .87 2.14.07.14.11.31.02.5-.09.19-.14.31-.27.47-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.61-.07.16-.19.7-.82.88-1.1.19-.28.37-.23.62-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="action-btn" href="tel:+917887721401">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.7A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.5 2.1L7.9 9.9a16 16 0 006 6l1.4-1.4a2 2 0 012.1-.5c.9.3 1.8.5 2.7.6a2 2 0 011.7 2.3z"/></svg>
+          <span>Call Us</span>
+        </a>
+        <a class="action-btn" href="https://maps.app.goo.gl/hyZupJKYLuJy5Kcz6" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l6-2 6 2 6-2v14l-6 2-6-2-6 2V7z"/><path d="M9 5v14M15 7v14"/></svg>
+          <span>Get Directions</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap reveal">
+    <span class="eyebrow">READY TO ORDER?</span>
+    <h2>Let's Make Your Moments Sweeter</h2>
+    <p>Message us on WhatsApp to place your order or ask anything.</p>
+    <a class="btn-order" href="https://wa.me/917887721401" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.79 14.13c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.71-4.1-4.85-4.29-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.09.99-2.37.26-.28.57-.35.76-.35s.38 0 .55.01c.18.01.41-.07.64.49.24.58.8 2 .87 2.14.07.14.11.31.02.5-.09.19-.14.31-.27.47-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.61-.07.16-.19.7-.82.88-1.1.19-.28.37-.23.62-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+      <span>Order Now</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand-mark">
+      <img src="./adams-cake-logo.png" alt="Adams Cake logo">
+      <span class="name">Adams Cake</span>
+    </div>
+    <div class="sub">CAKE SHOP · BHIWANDI</div>
+    <p class="thanks">Thank you for being a part of our sweet story!</p>
+    <p class="tagline">Happiness in every bite</p>
+  </div>
+</footer>
+
+<script>
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function() {
+    var isOpen = mobileMenu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.querySelectorAll('.mobile-menu a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('in'); });
+  }
+</script>
+</body>
+</html>
